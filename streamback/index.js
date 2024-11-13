@@ -256,10 +256,10 @@
 // 	console.error("Initialization error:", error);
 // 	process.exit(1);
 // });
+
 import express from "express";
 import { getServerAddress } from "./src/utils/network.js";
 import { RTSPStreamHandler } from "./src/services/streamHandler.js";
-import { RTSPServer } from "./src/services/rtspServer.js";
 import cors from "cors";
 import net from "net";
 
@@ -267,7 +267,8 @@ const app = express();
 const httpPort = process.env.PORT || 3000;
 const rtspPort = 1935;
 
-class RTSPServer {
+// Create the RTSPServer class directly since we're not importing it
+class CustomRTSPServer {
 	constructor(port, streamHandler) {
 		this.port = port;
 		this.streamHandler = streamHandler;
@@ -336,7 +337,7 @@ const init = async () => {
 	const serverAddress = await getServerAddress();
 
 	// Initialize RTSP server with streamHandler
-	rtspServer = new RTSPServer(rtspPort, streamHandler);
+	rtspServer = new CustomRTSPServer(rtspPort, streamHandler);
 	await rtspServer.start();
 
 	// Stream endpoints
